@@ -1,8 +1,8 @@
-import Card from "../components/Card";
-import Navbar from "../components/Navbar";
-import About from "../components/About";
-import Wrapper from "../components/Wrapper";
-import Filters from "../components/Filters";
+import Card from "./components/Card";
+import About from "./components/About";
+import Filters from "./components/Filters";
+import Navbar from "./components/Navbar";
+import Wrapper from "./components/Wrapper";
 import woman from "./assets/woman.png";
 import man from "./assets/man.png";
 import { useState } from "react";
