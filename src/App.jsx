@@ -10,10 +10,8 @@ import "./App.css";
 
 function App() {
   const profiles = [
-    { id: 0, name: "Ava", title: "UX designer", image: woman },
-    { id: 1, name: "Liam", title: "Frontend Developer", image: man },
-    { id: 2, name: "Bob", title: "Backend Developer", image: man },
-    { id: 3, name: "May", title: "Frontend Developer", image: woman },
+    { id: 0, name: "Keira", title: "UX designer", image: woman },
+    { id: 1, name: "Logan", title: "Frontend Web Developer", image: man },
   ];
   const titles = [...new Set(profiles.map((profile) => profile.title))];
   const [clicked, setClicked] = useState(false);
