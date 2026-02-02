@@ -17,7 +17,6 @@ function App() {
   const [clicked, setClicked] = useState(false);
   const handleClick = () => {
     setClicked((prev) => !prev);
-    setClicked((prev) => !prev);
     console.log(clicked);
   };
   const [title, setTitle] = useState("");
@@ -38,6 +37,8 @@ function App() {
       (profile.title === title || !title) &&
       profile.name.toLowerCase().includes(name.toLowerCase()),
   );
+
+  const [mode, setMode] = useState("view"); 
   return (
     <>
       <Navbar />
@@ -56,6 +57,28 @@ function App() {
           handleSearch={handleSearch}
           handleClick={handleClear}
         />
+
+        <div> 
+          <button onClick = {() => setMode(mode === "view" ? "edit" : "view")}>
+            Switch to {mode === "view" ? "Edit" : "View"}
+          </button>
+
+          {filteredProfiles.length > 0 ? (
+  filteredProfiles.map((profile) => (
+    <Card
+      key={profile.id}
+      name={profile.name}
+      title={profile.title}
+      image={profile.image}
+      mode={mode}
+    />
+  ))
+) : (
+  <p>No profiles selected.</p>
+)}
+
+        </div>
+
         <div className="grid">
           {filteredProfiles.length > 0 ? (
             filteredProfiles.map((profile) => (
