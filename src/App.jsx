@@ -3,15 +3,15 @@ import About from "./components/About";
 import Filters from "./components/Filters";
 import Navbar from "./components/Navbar";
 import Wrapper from "./components/Wrapper";
-import woman from "./assets/woman.png";
-import man from "./assets/man.png";
+import squid from "./assets/squidgame.png";
+import stranger from "./assets/strangerthings.png";
 import { useState } from "react";
 import "./App.css";
 
 function App() {
   const profiles = [
-    { id: 0, name: "Keira", title: "UX designer", image: woman },
-    { id: 1, name: "Logan", title: "Frontend Web Developer", image: man },
+    { id: 0, name: "Squid Game", title: "Science Fiction", image: squid },
+    { id: 1, name: "Stranger Things", title: "Science Fiction", image: stranger},
   ];
   const titles = [...new Set(profiles.map((profile) => profile.title))];
   const [clicked, setClicked] = useState(false);
