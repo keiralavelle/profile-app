@@ -1,14 +1,26 @@
-import Card from "./components/Card";
-import About from "./components/About";
-import Filters from "./components/Filters";
 import Navbar from "./components/Navbar";
+<<<<<<< HEAD
 import Wrapper from "./components/Wrapper";
 import squid from "./assets/squidgame.png";
 import stranger from "./assets/strangerthings.png";
 import { useState } from "react";
+=======
+import woman from "./assets/woman.png";
+import man from "./assets/man.png";
+import { useState, useContext } from "react";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import FetchedProfilePage from "./pages/FetchedProfilePage";
+import AddProfilePage from "./pages/AddProfilePage";
+import ProfileDetailPage from "./pages/ProfileDetailPage";
+>>>>>>> e062131 (Lab 11)
 import "./App.css";
+import ProfileLayoutPage from "./pages/ProfileLayoutPage";
+import ModeContext from "./context/ModeContext";
 
 function App() {
+<<<<<<< HEAD
   const profiles = [
     { id: 0, name: "Squid Game", title: "Science Fiction", image: squid },
     { id: 1, name: "Stranger Things", title: "Science Fiction", image: stranger},
@@ -19,6 +31,27 @@ function App() {
     setClicked((prev) => !prev);
     console.log(clicked);
   };
+=======
+  const [profiles, setProfiles] = useState([
+    {
+      id: 0,
+      name: "Keira",
+      title: "UX designer",
+      email: "keiralavelle@gmail.com",
+      bio: "hello : )",
+      image: woman,
+    },
+    {
+      id: 1,
+      name: "Logan",
+      title: "Frontend Web Developer",
+      email: "",
+      bio: "",
+      image: man,
+    },
+  ]);
+
+>>>>>>> e062131 (Lab 11)
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const handleChangeTitle = (event) => {
@@ -32,69 +65,31 @@ function App() {
     setName("");
   };
 
-  const filteredProfiles = profiles.filter(
-    (profile) =>
-      (profile.title === title || !title) &&
-      profile.name.toLowerCase().includes(name.toLowerCase()),
-  );
+  // const [theme, setTheme] = useState("light");
 
-  const [mode, setMode] = useState("view"); 
+  // const toggleTheme = () => {
+  //   setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  // };
+
+  const {theme} =useContext(ModeContext)
+  const updateProfiles = (profile) =>{
+    setProfiles(pre => ([...pre, profile]))
+  }
   return (
-    <>
+    <HashRouter>
+    <div className={theme}>
       <Navbar />
-      <Wrapper id="about">
-        <About />
-        <button onClick={handleClick}>
-          {clicked ? "Clicked" : "Click me"}
-        </button>
-      </Wrapper>
-      <Wrapper id="profiles">
-        <Filters
-          titles={titles}
-          title={title}
-          name={name}
-          handleChange={handleChangeTitle}
-          handleSearch={handleSearch}
-          handleClick={handleClear}
-        />
-
-        <div> 
-          <button onClick = {() => setMode(mode === "view" ? "edit" : "view")}>
-            Switch to {mode === "view" ? "Edit" : "View"}
-          </button>
-
-          {filteredProfiles.length > 0 ? (
-  filteredProfiles.map((profile) => (
-    <Card
-      key={profile.id}
-      name={profile.name}
-      title={profile.title}
-      image={profile.image}
-      mode={mode}
-    />
-  ))
-) : (
-  <p>No profiles selected.</p>
-)}
-
-        </div>
-
-        <div className="grid">
-          {filteredProfiles.length > 0 ? (
-            filteredProfiles.map((profile) => (
-              <Card
-                key={profile.id}
-                name={profile.name}
-                title={profile.title}
-                image={profile.image}
-              />
-            ))
-          ) : (
-            <p>No profiles selected.</p>
-          )}
-        </div>
-      </Wrapper>
-    </>
+      <Routes>
+        <Route path="/" element={<HomePage profiles={profiles} handleChangeTitle={handleChangeTitle} handleSearch={handleSearch} handleClear={handleClear} title={title} name={name}/>} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/fetched-profiles" element={<FetchedProfilePage />} />
+        <Route path="/fetched-profiles/profile" element={<ProfileLayoutPage />}>
+          <Route path=":id" element={<ProfileDetailPage />} />
+        </Route>        
+        <Route path="/add-profile" element={<AddProfilePage updateProfiles={updateProfiles}/>} />
+      </Routes>
+    </div>
+    </HashRouter>
   );
 }
 
