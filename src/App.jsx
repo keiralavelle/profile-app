@@ -1,10 +1,4 @@
 import Navbar from "./components/Navbar";
-<<<<<<< HEAD
-import Wrapper from "./components/Wrapper";
-import squid from "./assets/squidgame.png";
-import stranger from "./assets/strangerthings.png";
-import { useState } from "react";
-=======
 import woman from "./assets/woman.png";
 import man from "./assets/man.png";
 import { useState, useContext } from "react";
@@ -14,24 +8,12 @@ import AboutPage from "./pages/AboutPage";
 import FetchedProfilePage from "./pages/FetchedProfilePage";
 import AddProfilePage from "./pages/AddProfilePage";
 import ProfileDetailPage from "./pages/ProfileDetailPage";
->>>>>>> e062131 (Lab 11)
 import "./App.css";
 import ProfileLayoutPage from "./pages/ProfileLayoutPage";
 import ModeContext from "./context/ModeContext";
 
+
 function App() {
-<<<<<<< HEAD
-  const profiles = [
-    { id: 0, name: "Squid Game", title: "Science Fiction", image: squid },
-    { id: 1, name: "Stranger Things", title: "Science Fiction", image: stranger},
-  ];
-  const titles = [...new Set(profiles.map((profile) => profile.title))];
-  const [clicked, setClicked] = useState(false);
-  const handleClick = () => {
-    setClicked((prev) => !prev);
-    console.log(clicked);
-  };
-=======
   const [profiles, setProfiles] = useState([
     {
       id: 0,
@@ -45,13 +27,12 @@ function App() {
       id: 1,
       name: "Logan",
       title: "Frontend Web Developer",
-      email: "",
-      bio: "",
+      email: "loganportscheller@gmail.com",
+      bio: "hi",
       image: man,
     },
   ]);
 
->>>>>>> e062131 (Lab 11)
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const handleChangeTitle = (event) => {
