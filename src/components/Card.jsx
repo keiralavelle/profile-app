@@ -2,7 +2,7 @@ import styles from "../styles/Card.module.css";
 import { useLayoutEffect, useRef, useState } from "react";
 
 const Card = ({ name, title, image, mode }) => {
-  const cardRef = useRef(null);          // ✅ useRef to access DOM element
+  const cardRef = useRef(null);     
   const [isCompact, setIsCompact] = useState(false);
 
   useLayoutEffect(() => {
