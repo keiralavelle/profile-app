@@ -1,5 +1,5 @@
 import styles from "../styles/Card.module.css";
-import { useLayoutEffect, useRef, useState } from "react";
+import { memo, useLayoutEffect, useRef, useState } from "react";
 
 const Card = ({ name, title, image, mode }) => {
   const cardRef = useRef(null);     

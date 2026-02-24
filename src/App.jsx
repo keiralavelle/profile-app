@@ -1,17 +1,19 @@
 import Navbar from "./components/Navbar";
 import woman from "./assets/woman.png";
 import man from "./assets/man.png";
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback, lazy, Suspense } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
+
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
-import FetchedProfilePage from "./pages/FetchedProfilePage";
 import AddProfilePage from "./pages/AddProfilePage";
 import ProfileDetailPage from "./pages/ProfileDetailPage";
-import "./App.css";
 import ProfileLayoutPage from "./pages/ProfileLayoutPage";
+
+import "./App.css";
 import ModeContext from "./context/ModeContext";
 
+const FetchedProfilePage = lazy(() => import("./pages/FetchedProfilePage"));
 
 function App() {
   const [profiles, setProfiles] = useState([
@@ -35,41 +37,54 @@ function App() {
 
   const [title, setTitle] = useState("");
   const [name, setName] = useState("");
-  const handleChangeTitle = (event) => {
+
+  const handleChangeTitle = useCallback((event) => {
     setTitle(event.target.value);
-  };
-  const handleSearch = (event) => {
+  }, []);
+
+  const handleSearch = useCallback((event) => {
     setName(event.target.value);
-  };
-  const handleClear = () => {
+  }, []);
+
+  const handleClear = useCallback(() => {
     setTitle("");
     setName("");
-  };
+  }, []);
 
-  // const [theme, setTheme] = useState("light");
+  const updateProfiles = useCallback((profile) => {
+    setProfiles((pre) => [...pre, profile]);
+  }, []);
 
-  // const toggleTheme = () => {
-  //   setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-  // };
+  const { theme } = useContext(ModeContext);
 
-  const {theme} =useContext(ModeContext)
-  const updateProfiles = (profile) =>{
-    setProfiles(pre => ([...pre, profile]))
-  }
   return (
     <HashRouter>
-    <div className={theme}>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage profiles={profiles} handleChangeTitle={handleChangeTitle} handleSearch={handleSearch} handleClear={handleClear} title={title} name={name}/>} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/fetched-profiles" element={<FetchedProfilePage />} />
-        <Route path="/fetched-profiles/profile" element={<ProfileLayoutPage />}>
-          <Route path=":id" element={<ProfileDetailPage />} />
-        </Route>        
-        <Route path="/add-profile" element={<AddProfilePage updateProfiles={updateProfiles}/>} />
-      </Routes>
-    </div>
+      <div className={theme}>
+        <Navbar />
+        <Suspense fallback={<p>Loading...</p>}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  profiles={profiles}
+                  handleChangeTitle={handleChangeTitle}
+                  handleSearch={handleSearch}
+                  handleClear={handleClear}
+                  title={title}
+                  name={name}
+                />
+              }
+            />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/fetched-profiles" element={<FetchedProfilePage />} />
+            <Route path="/fetched-profiles/profile" element={<ProfileLayoutPage />}>
+              <Route path=":id" element={<ProfileDetailPage />} />
+            </Route>
+            <Route path="/add-profile" element={<AddProfilePage updateProfiles={updateProfiles} />} />
+          </Routes>
+        </Suspense>
+      </div>
     </HashRouter>
   );
 }
