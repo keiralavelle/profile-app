@@ -77,11 +77,11 @@ function App() {
               }
             />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/add-profile" element={<AddProfilePage updateProfiles={updateProfiles} />} />
             <Route path="/fetched-profiles" element={<FetchedProfilePage />} />
             <Route path="/fetched-profiles/profile" element={<ProfileLayoutPage />}>
               <Route path=":id" element={<ProfileDetailPage />} />
             </Route>
-            <Route path="/add-profile" element={<AddProfilePage updateProfiles={updateProfiles} />} />
           </Routes>
         </Suspense>
       </div>
