@@ -1,6 +1,6 @@
-import { useState } from "react";
-import styles from "../styles/addProfileForm.module.css"
-import { useNavigate } from "react-router-dom"
+import { useReducer, useRef, useState } from "react";
+import styles from "../styles/addProfileForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 const stripTags = (s) => String(s ?? "").replace(/<\/?[^>]+>/g, "");
 const trimCollapse = (s) =>
@@ -8,14 +8,28 @@ const trimCollapse = (s) =>
     .trim()
     .replace(/\s+/g, " ");
 
+const initialValues = {
+  name: "",
+  title: "",
+  email: "",
+  bio: "",
+  image: null,
+};
+
+function valuesReducer(state, action) {
+  switch (action.type) {
+    case "SET_FIELD":
+      return { ...state, [action.field]: action.value };
+    case "RESET":
+      return initialValues;
+    default:
+      return state;
+  }
+}
+
 const AddProfileForm = ({ onAddProfile }) => {
-  const [values, setValues] = useState({
-    name: "",
-    title: "",
-    email: "",
-    bio: "",
-    image: null,
-  });
+  const [values, dispatch] = useReducer(valuesReducer, initialValues);
+
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -23,25 +37,29 @@ const AddProfileForm = ({ onAddProfile }) => {
   const { name, title, email, bio, image } = values;
   const navigate = useNavigate();
 
+  const nameInputRef = useRef(null);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
+
     if (name === "image") {
       const file = event.target.files[0];
       if (file && file.size < 1024 * 1024) {
-        setValues((pre) => ({ ...pre, image: file }));
+        dispatch({ type: "SET_FIELD", field: "image", value: file });
         setError("");
       } else {
         setError("Image should be less than 1 MB");
-        setValues((pre) => ({ ...pre, image: null }));
+        dispatch({ type: "SET_FIELD", field: "image", value: null });
       }
     } else {
-      setValues((pre) => ({ ...pre, [name]: value }));
+      dispatch({ type: "SET_FIELD", field: name, value });
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsSubmitting(true);
+
     try {
       if (
         !stripTags(trimCollapse(name)) ||
@@ -50,26 +68,30 @@ const AddProfileForm = ({ onAddProfile }) => {
         !stripTags(trimCollapse(email))
       ) {
         setError("Please fill in name, title, email, and description");
+        nameInputRef.current?.focus();
         return;
       }
-      console.log(`image ${image}`);
+
       const cleanedData = {
         id: Date.now(),
         name: stripTags(trimCollapse(name)),
         title: stripTags(trimCollapse(title)),
         email: stripTags(trimCollapse(email)),
         bio: trimCollapse(bio),
-        image: URL.createObjectURL(image),
+        image: image ? URL.createObjectURL(image) : null,
       };
-      //submit the data
+
       onAddProfile(cleanedData);
 
-      setValues({ name: "", title: "", email: "", bio: "", image: null });
+      dispatch({ type: "RESET" }); 
       setError("");
       setSuccess("Form is submitted susccesfully");
+
+      nameInputRef.current?.focus(); 
+
       setTimeout(() => {
         setSuccess("");
-        navigate("/")
+        navigate("/");
       }, 1000);
     } catch (error) {
       setError(error.message);
@@ -90,6 +112,7 @@ const AddProfileForm = ({ onAddProfile }) => {
     <form onSubmit={handleSubmit} className={styles["add-profile"]}>
       <label htmlFor="name">Name</label>
       <input
+        ref={nameInputRef}   
         id="name"
         name="name"
         type="text"
@@ -97,6 +120,7 @@ const AddProfileForm = ({ onAddProfile }) => {
         value={name}
         onChange={handleChange}
       />
+
       <label htmlFor="title">Title</label>
       <input
         id="title"
@@ -106,6 +130,7 @@ const AddProfileForm = ({ onAddProfile }) => {
         value={title}
         onChange={handleChange}
       />
+
       <label htmlFor="email">Email</label>
       <input
         id="email"
@@ -115,6 +140,7 @@ const AddProfileForm = ({ onAddProfile }) => {
         value={email}
         onChange={handleChange}
       />
+
       <label htmlFor="bio">Add description</label>
       <textarea
         id="bio"
@@ -124,6 +150,7 @@ const AddProfileForm = ({ onAddProfile }) => {
         maxLength={200}
         onChange={handleChange}
       />
+
       <label htmlFor="image">Upload an image</label>
       <input
         id="image"

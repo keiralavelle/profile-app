@@ -45,3 +45,6 @@
       border-radius: 6px;
       border: 1px solid #aaa;
     }
+    .compact {
+      flex-direction: column;
+    }
