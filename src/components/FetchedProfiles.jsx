@@ -20,7 +20,7 @@ import { useState, useEffect } from "react";
    };
    //Fetch titles
    useEffect(() => {
-     fetch( "https://web.ics.purdue.edu/~keiralavelle/profile-app/get-titles.php")
+     fetch( "https://web.ics.purdue.edu/~klavell/profile-app/get-titles.php")
        .then((res) => res.json())
        .then((res) => setTitles(res.titles));
    }, []);
@@ -28,7 +28,7 @@ import { useState, useEffect } from "react";
    //Fetch profiles
    useEffect(() => {
      fetch(
-       "https://web.ics.purdue.edu/~keiralavelle/profile-app/fetch-data-with-filter.php?title=${title}&name=${name}",
+       "https://web.ics.purdue.edu/~klavell/profile-app/fetch-data-with-filter.php?title=${title}&name=${name}",
      )
        .then((res) => res.json())
        .then((res) => {
