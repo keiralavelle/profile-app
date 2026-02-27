@@ -33,7 +33,7 @@ function App() {
     },
   ]);
 
-  onst [title, setTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [name, setName] = useState("");
   const handleChangeTitle = useCallback((event) => {
     setTitle(event.target.value);
