@@ -1,5 +1,5 @@
 import { memo } from "react";
-import styles from "../styles/filters.module.css";
+import styles from "../styles/filter.module.css";
 
 const Filters = memo(({ titles, title, name, handleChange, handleSearch, handleClick }) => {
   return (
