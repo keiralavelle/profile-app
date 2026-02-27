@@ -11,18 +11,16 @@ function HomePage({
   title,
   name,
 }) {
-  const titles = useMemo(() => {
-    return [...new Set(profiles.map((profile) => profile.title))];
-  }, [profiles]);
+  const titles = useMemo(
+    () => [...new Set(profiles.map((profile) => profile.title))],
+    [profiles],
+  );
 
-  const filteredProfiles = useMemo(() => {
-    return profiles.filter(
-      (profile) =>
-        (profile.title === title || !title) &&
-        profile.name.toLowerCase().includes(name.toLowerCase())
-    );
-  }, [profiles, title, name]);
-
+  const filteredProfiles = profiles.filter(
+    (profile) =>
+      (profile.title === title || !title) &&
+      profile.name.toLowerCase().includes(name.toLowerCase()),
+  );
   return (
     <Wrapper id="profiles">
       <h1>Profiles</h1>
