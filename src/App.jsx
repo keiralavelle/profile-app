@@ -10,11 +10,12 @@ import ProfileDetailPage from "./pages/ProfileDetailPage";
 import "./App.css";
 import ProfileLayoutPage from "./pages/ProfileLayoutPage";
 import ModeContext from "./context/ModeContext";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 const FetchedProfilePage = lazy(() => import("./pages/FetchedProfilePage"))
 
 function App() {
-  const [profiles, setProfiles] = useState([
+  const [profiles, setProfiles] = useLocalStorage("profiles", [
     {
       id: 0,
       name: "Keira",
